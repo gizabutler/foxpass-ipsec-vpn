@@ -1,9 +1,7 @@
 {
   "variables":{
-    "aws_access_key":"",
-    "aws_secret_key":"",
     "region":"us-east-2",
-    "source_ami": ""
+    "source_ami": "ami-82f4dae7"
   },
   "builders":[
     {
@@ -72,7 +70,7 @@
         "wget https://bootstrap.pypa.io/get-pip.py",
         "sudo python get-pip.py",
         "sudo apt-get -y --no-install-recommends install xmlto",
-        "sudo apt-get -y install pcs awscli crmsh",
+        "sudo apt-get -y install awscli",
         "sudo pip install --upgrade pip",
         "sudo pip install --upgrade setuptools",
         "sudo pip install -r /tmp/foxpass-vpn/requirements.txt",
@@ -92,12 +90,9 @@
         "sudo mv /tmp/foxpass-vpn/scripts/radiusclient.conf /etc/radiusclient",
         "sudo mv /tmp/foxpass-vpn/foxpass-radius-agent/foxpass-radius-agent.py /usr/local/bin",
         "sudo mv /tmp/foxpass-vpn/foxpass-radius-agent/systemd/foxpass-radius-agent.service /lib/systemd/system/",
-        "sudo mv /opt/templates/corosync.conf /etc/corosync/",
-        "sudo mv /opt/templates/awseip /usr/lib/ocf/resource.d/heartbeat/awseip",
-        "sudo chown root:root /usr/lib/ocf/resource.d/heartbeat/awseip",
-        "sudo chmod 744 /usr/lib/ocf/resource.d/heartbeat/awseip",
         "sudo systemctl enable foxpass-radius-agent.service",
-        "sudo chmod 744 /opt/bin/config.py"
+        "sudo chmod 744 /opt/bin/config.py",
+        "sudo chmod 744 /opt/bin/network-config.py"
       ]
     }
   ]

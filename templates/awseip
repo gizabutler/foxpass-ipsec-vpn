@@ -158,13 +158,13 @@ awseip_start() {
                 NETWORK_ID="$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/${MAC}/interface-id)"
             fi
         done
-        $AWSCLI --profile $OCF_RESKEY_profile ec2 associate-address  \
+        $AWSCLI e ec2 associate-address  \
             --network-interface-id ${NETWORK_ID} \
             --allocation-id ${ALLOCATION_ID} \
             --private-ip-address ${PRIVATE_IP_ADDRESS}
         RET=$?
     else
-        $AWSCLI --profile $OCF_RESKEY_profile ec2 associate-address  \
+        $AWSCLI e ec2 associate-address  \
             --instance-id ${INSTANCE_ID} \
             --allocation-id ${ALLOCATION_ID}
         RET=$?
@@ -184,7 +184,7 @@ awseip_start() {
 awseip_stop() {
     awseip_monitor || return $OCF_SUCCESS
 
-    ASSOCIATION_ID=$($AWSCLI --profile $OCF_RESKEY_profile --output json ec2 describe-addresses \
+    ASSOCIATION_ID=$($AWSCLI e --output json ec2 describe-addresses \
                          --allocation-id ${ALLOCATION_ID} | grep -m 1 "AssociationId" | awk -F'"' '{print$4}')
 
     if [ -z "${ASSOCIATION_ID}" ]; then
@@ -209,7 +209,7 @@ awseip_stop() {
 }
 
 awseip_monitor() {
-    $AWSCLI --profile $OCF_RESKEY_profile ec2 describe-instances --instance-id "${INSTANCE_ID}" | grep -q "${ELASTIC_IP}"
+    $AWSCLI e ec2 describe-instances --instance-id "${INSTANCE_ID}" | grep -q "${ELASTIC_IP}"
     RET=$?
 
     if [ $RET -ne 0 ]; then
